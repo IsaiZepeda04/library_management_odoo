@@ -1,0 +1,16 @@
+<odoo>
+    <record id ="email_template_overdue_loan" model="mail.template">
+        <field name="name">Aviso de prestamos vencido</field>
+        <field name="model_id" ref="model_library_loan"/>
+        <field name="subject">Prestamo vencido: {{ object.book_id.name }}</field>
+        <field name="partner_to">{{ object.member_id.email or '' }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hola <t t-out="object.member_id.name"/>:</p>
+                <p>Tu prestamo del libro <strong><t t-out="object.book_id.name"/></strong> se encuentra vencido.</p>
+                <p>Fecha de prestamo: <t t-out="object.loan_date"/></p>
+                <p>Por favor, realiza la devolucion lo antes posible.</p>
+            </div>
+        </field>
+    </record>
+</odoo>

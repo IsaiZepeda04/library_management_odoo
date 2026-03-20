@@ -1,0 +1,59 @@
+<odoo>
+    <template id="portal_my_home_library_loans"
+              inherit_id="portal.portal_my_home"
+              name="Library Loans Portal Entry">
+        <xpath expr="//div[contains(@class, 'o_portal_docs')]" position="inside">
+            <a href="/my/loans" class="list-group-item list-group-item-action">
+                Mis Préstamos
+            </a>
+        </xpath>
+    </template>
+    
+    <template id="portal_my_loans" name="Mis Prestamos">
+        <t t-call="website.layout">
+            <div class="container mt-4 mb-4">
+                <h3>Mis Prestamos</h3>
+
+                <t t-if="loans">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>Libro</th>
+                                <th>Fecha de prestamos</th>
+                                <th>Estado</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="loans" t-as="loan">
+                                <tr>
+                                    <td><t t-out="loan.book_id.name"/></td>
+                                    <td><t t-out="loan.loan_date"/></td>
+                                    <td>
+                                        <t t-if="loan.state == 'active'">Activo</t>
+                                        <t t-elif="loan.state == 'overdue'">Vencido</t>
+                                        <t t-elif="loan.state == 'returned'">Devuelto</t>
+                                    </td>
+                                    <td>
+                                        <t t-if="loan.state == 'active'">
+                                            <a t-att-href="'/my/loans/%s/renew' % loan.id"
+                                                class="brn btn-sm btn-primary">
+                                                Renovar
+                                            </a>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="text-muted">No disponible</span>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+                <t t-else="">
+                    <p>No tiene prestamos registrados.</p>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

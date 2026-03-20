@@ -1,0 +1,79 @@
+<odoo>
+    <record id="view_library_book_list" model="ir.ui.view">
+        <field name="name">library.book.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <list string="Libros">
+                <field name="name"/>
+                <field name="author"/>
+                <field name="isbn"/>
+                <field name="publi_date"/>
+                <field name="years_since_publication"/>
+                <field name="is_available"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_library_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form string="Libro">
+                <header>
+                    <button name="action_create_loan"
+                            string="Prestar Libro"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not is_available"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="author"/>
+                        <field name="isbn"/>
+                        <field name="publi_date"/>
+                        <field name="years_since_publication" readonly="1"/>
+                        <field name="is_available"/>
+                        <field name="product_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_library_book_search" model="ir.ui.view">
+        <field name="name">library.book.search</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Libros">
+                <field name="name"/>
+                <field name="author"/>
+                <field name="isbn"/>
+                <filter string="Disponibles" 
+                        name="available" 
+                        domain="[('is_available', '=', True)]"/>
+
+                <filter string="No disponibles" 
+                        name="not_available" 
+                        domain="[('is_available', '=', False)]"/>
+
+                 <separator/>      
+
+                    <filter string="Autor" 
+                            name="group_by_author" 
+                            context="{'group_by': 'author'}"/>
+                    
+                    <filter string="Disponibilidad" 
+                            name="group_by_availability" 
+                            context="{'group_by': 'is_available'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_library_books" model="ir.actions.act_window">
+        <field name="name">Libros</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_library_book_search"/>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+    <record id="rule_public_user_only_available_books" model="ir.rule">
+        <field name="name">Usuario Publico solo ve libros disponibles</field>
+        <field name="model_id" ref="model_library_book"/>
+        <field name="groups" eval="[(4,ref('library_management.group_library_public_user'))]"/>
+        <field name="domain_force">[('is_available', '=', True)]</field>
+    </record>
+</odoo>

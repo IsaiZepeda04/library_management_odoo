@@ -1,0 +1,16 @@
+<odoo>
+    <menuitem id="menu_library_root" name="Library Management" sequence="10"
+              groups="base.group_system,library_management.group_library_librarian,library_management.group_library_public_user"/>
+
+    <menuitem id="menu_library_members" name="Miembros" parent="menu_library_root"
+              action="action_library_members" sequence="20"
+              groups="base.group_system,library_management.group_library_librarian"/>
+
+    <menuitem id="menu_library_books" name="Libros" parent="menu_library_root"
+              action="action_library_books" sequence="10"
+              groups="base.group_system,library_management.group_library_librarian,library_management.group_library_public_user"/>
+
+    <menuitem id="menu_library_loans" name="Préstamos" parent="menu_library_root"
+              action="action_library_loans" sequence="30"
+              groups="base.group_system,library_management.group_library_librarian"/>
+</odoo>
