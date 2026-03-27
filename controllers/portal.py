@@ -1,8 +1,21 @@
 from odoo import http, fields
 from odoo.http import request
+from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
-class LibraryPortal(http.Controller):
+class LibraryPortal(CustomerPortal):
+
+    def _prepare_home_portal_values(self, counters):
+        values = super()._prepare_home_portal_values(counters)
+        partner = request.env.user.partner_id
+
+        loan_count = request.env['library.loan'].sudo().search_count([
+            ('member_id', '=', partner.id),
+            ('state', 'in', ['active', 'overdue', 'returned'])
+        ])
+
+        values['loan_count'] = loan_count
+        return values
 
     @http.route(['/my/loans'], type='http', auth='user', website=True)
     def portal_my_loans(self, **kw):
@@ -12,10 +25,11 @@ class LibraryPortal(http.Controller):
             ('member_id', '=', partner.id)
         ], order='loan_date desc')
 
-        values = {
+        values = self._prepare_portal_layout_values()
+        values.update({
             'loans': loans,
             'page_name': 'my_loans',
-        }
+        })
         return request.render('library_management.portal_my_loans', values)
 
     @http.route(['/my/loans/<int:loan_id>/renew'], type='http', auth='user', website=True)
@@ -32,5 +46,5 @@ class LibraryPortal(http.Controller):
         if loan.state in ['overdue', 'returned']:
             return request.redirect('/my/loans')
 
-        loan.loan_date = fields.Date.today()
+        loan.action_renew_loan()
         return request.redirect('/my/loans')

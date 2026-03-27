@@ -34,7 +34,7 @@
                         <field name="publi_date"/>
                         <field name="years_since_publication" readonly="1"/>
                         <field name="is_available"/>
-                        <field name="product_id"/>
+                        <field name="product_id" domain="[('is_library_item', '=', True)]"/>
                     </group>
                 </sheet>
             </form>

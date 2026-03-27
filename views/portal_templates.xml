@@ -3,25 +3,28 @@
               inherit_id="portal.portal_my_home"
               name="Library Loans Portal Entry">
         <xpath expr="//div[contains(@class, 'o_portal_docs')]" position="inside">
-            <a href="/my/loans" class="list-group-item list-group-item-action">
-                Mis Préstamos
+            <a href="/my/loans" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <span>Mis Préstamos</span>
+                <span class="badge rounded-pill bg-primary">
+                    <t t-out="loan_count or 0"/>
+                </span>
             </a>
         </xpath>
     </template>
-    
+
     <template id="portal_my_loans" name="Mis Prestamos">
-        <t t-call="website.layout">
+        <t t-call="portal.portal_layout">
             <div class="container mt-4 mb-4">
-                <h3>Mis Prestamos</h3>
+                <h3>Mis Préstamos</h3>
 
                 <t t-if="loans">
                     <table class="table table-striped mt-3">
                         <thead>
                             <tr>
                                 <th>Libro</th>
-                                <th>Fecha de prestamos</th>
+                                <th>Fecha de préstamo</th>
                                 <th>Estado</th>
-                                <th>Accion</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,7 +40,7 @@
                                     <td>
                                         <t t-if="loan.state == 'active'">
                                             <a t-att-href="'/my/loans/%s/renew' % loan.id"
-                                                class="brn btn-sm btn-primary">
+                                               class="btn btn-sm btn-primary">
                                                 Renovar
                                             </a>
                                         </t>
@@ -51,7 +54,7 @@
                     </table>
                 </t>
                 <t t-else="">
-                    <p>No tiene prestamos registrados.</p>
+                    <p>No tiene préstamos registrados.</p>
                 </t>
             </div>
         </t>
